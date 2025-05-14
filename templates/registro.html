@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Consulta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/registros.css"> 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #000000;
+        }
+        .form-container {
+            background: #626262;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+        }
+        button {
+            background-color: #2b8a3e;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #237032;
+        }
+        .alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+    </style>
+</head>
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="form-container">
+        <h2>Registrar Nueva Consulta</h2>
+        <form id="consulta-form" method="POST" action="/registrar_consulta">
+            <input type="date" name="fecha" required>
+            <input type="time" name="hora" required>
+            <input type="text" name="nombre" placeholder="Nombre completo" required>
+            <input type="text" name="telefono" placeholder="Teléfono">
+            <input type="text" name="direccion" placeholder="Dirección">
+            <input type="email" name="correo" placeholder="Correo electrónico" required>
+            <button type="submit">Guardar Consulta</button>
+        </form>
+    </div>
+
+    <script>
+    document.getElementById('consulta-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const fecha = form.fecha.value;
+        const hora = form.hora.value;
+
+        // 1) Validar horario dentro de 12:00-17:00
+        if (hora < '12:00' || hora > '17:00') {
+            alert('El horario debe estar entre 12:00 y 17:00');
+            return;
+        }
+
+        // 2) Consultar cupo y duplicados para esa fecha
+        try {
+            const res = await fetch(`/api/consultas?fecha=${fecha}`);
+            const citas = await res.json();
+            // duplicado exacto
+            if (citas.some(c => c.hora === hora)) {
+                alert('Ese horario ya está ocupado, elige otro.');
+                return;
+            }
+            // cupo diario
+            if (citas.length >= 5) {
+                const ok = confirm('Lo siento, ya no hay cupo para esta fecha. ¿Quieres agendar para el día siguiente?');
+                if (ok) {
+                    const fechaObj = new Date(fecha);
+                    fechaObj.setDate(fechaObj.getDate() + 1);
+                    const y = fechaObj.getFullYear();
+                    const m = String(fechaObj.getMonth()+1).padStart(2,'0');
+                    const d = String(fechaObj.getDate()).padStart(2,'0');
+                    form.fecha.value = `${y}-${m}-${d}`;
+                } else {
+                    return;
+                }
+            }
+            // 3) Si pasa todo, enviar
+            form.submit();
+        } catch (err) {
+            console.error(err);
+            alert('Error al comprobar disponibilidad. Intenta de nuevo.');
+        }
+    });
+    </script>
+
+</body>
+</html>

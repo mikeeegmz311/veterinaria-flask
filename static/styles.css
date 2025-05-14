@@ -1,0 +1,486 @@
+/* General Reset */
+* {
+    margin: 200;
+    padding: 200;
+    box-sizing: border-box;
+} 
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 2.6;
+    color: #19a146;
+    background: #010101;/*ventana de links color*/
+}
+
+/* Barra de navegación */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #000;
+    color: rgb(2, 2, 2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(8, 8, 8);s
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #ffd700;
+}
+
+.burger {
+    display: none;
+    flex-direction: column;
+    gap: 0.3rem;
+    cursor: pointer;
+}
+
+.burger span {
+    width: 25px;
+    height: 3px;
+    background: white;
+}
+
+/* Página principal */
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    background: #0d0f36 no-repeat center/cover;/*fondo de servicios medicos*/
+    color: #4b8a93;/*servivcios medicos letras*/
+    padding: 2rem;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+/*Movimiento letrasassssss+++++++++++++++++++++++++*/
+.contenedor{
+    height: 40px;
+    display: flex;
+    font-size: 35px;
+    line-height: 40px;
+    overflow: hidden;
+}    
+u1, p{
+    margin: 0;
+    padding-left: 10px;
+}
+p{
+    color: #b9f1d6;/*color de letras en toda la pagina===========================================================*/
+    letter-spacing: 1px;
+}
+u1{
+    list-style-type: none;
+    animation: movimiento 6s infinite;
+}
+u1 li{
+    background-image: linear-gradient(#ffbf00, #3aee2075);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 0 5px;
+    letter-spacing: 1px;
+}
+@keyframes movimiento{
+    0%{margin-top: 0;}
+    20%{margin-top: 0;}
+    25%{margin-top: -40px;}
+    50%{margin-top: -40px;}
+    55%{margin-top: -80px;}
+    80%{margin-top: -80px;}
+    85%{margin-top: -40px;}
+    95%{margin-top: -40px;}
+    100%{margin-top: 0;}
+}
+
+.hero-section p {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Botón */
+.btn-primary {
+    background: rgb(255, 255, 255);
+    color: rgb(77, 73, 73);
+    padding: 0.8rem 1.8rem;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 50px;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover {
+    background: rgb(178, 180, 41);
+    transform: scale(1.05);
+}
+
+/*9 cartas------------------------------------------------*/
+.cartas {
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    border: 1px solid #e7fc29; /*orillas*/
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(253, 27, 27, 0.1);
+    color: rgb(0, 0, 0);
+    text-align: center;
+  }
+  
+  .cartas p {
+    font-size: 12px;
+    color: rgb(0, 0, 0);
+  }
+  
+  .slider {
+    width: 100%;
+    height: var(--height);
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 10% 90%, transparent);
+  }
+  .slider .list {
+    display: flex;
+    width: 100%;
+    min-width: calc(var(--width) * var(--quantity));
+    position: relative;
+  }
+  .slider .list .item {
+    width: var(--width);
+    height: var(--height);
+    position: absolute;
+    left: 100%;
+    animation: autoRun 10s linear infinite;
+    transition: filter 0.5s;
+    animation-delay: calc(
+      (10s / var(--quantity)) * (var(--position) - 1) - 10s
+    ) !important;
+  }
+  .slider .list .item img {
+    width: 100%;
+  }
+  @keyframes autoRun {
+    from {
+      left: 100%;
+    }
+    to {
+      left: calc(var(--width) * -1);
+    }
+  }
+  .slider:hover .item {
+    animation-play-state: paused !important;
+    filter: grayscale(1);
+  }
+  .slider .item:hover {
+    filter: grayscale(0);
+  }
+  .slider[reverse="true"] .item {
+    animation: reversePlay 10s linear infinite;
+  }
+  @keyframes reversePlay {
+    from {
+      left: calc(var(--width) * -1);
+    }
+    to {
+      left: 100%;
+    }
+  }  
+/* cartas----------------------------------------*/
+.cards-container {
+    padding: 3rem;
+    background:#0d0f36;/*COLOR FONDO TARJETAS*/
+}
+.cards-container h2{
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    color: white;/*NUESTROS SERVICIO*/
+}
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+.card {
+    background: #93a39d;/*COLOR CARTAS++++++++*/
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0,0,0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s;
+    color: rgb(255, 255, 255);/*TITUTLO*/
+}
+.card:hover{
+    transform: scale(1.05);
+} 
+.card img{
+    width: 100%;
+    height: auto;
+}
+.card h3{
+    margin: 1rem 0;
+    font-size: 1.5rem;
+}
+.card p{
+    padding: 0 1rem 1rem;
+    font-size: 0.9rem;
+}
+/*parte del contacto---------------------------------*/
+.contact-section{
+    padding: 3rem;
+    background: #294380;
+    color: white;
+    text-align: center;
+}
+.contact-section h2{
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+}
+#contact-form{
+    display: inline-grid;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 500px;
+    margin: none;
+}
+#contact-form input, #contact-form textarea{
+    padding: 1rem;
+    border: 1px, solid #ddd;
+    border-radius: 10px;
+    outline: none;
+}
+#contact-form button{
+    background: #69d2ce;/*BOTON DESCUBRIR MAS*/
+    border: none;
+    color: white;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: background 0.3s;
+}
+/*probable falla*/
+#contact-form button1hover{
+    background: #333;
+}
+
+/*animacion de carga-------------------------*/
+#contact-form button.loading{
+    background-color: #ccc;
+    cursor: not-allowed;
+    position: relative;
+}
+#contact-form button.loading::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid transparent;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin{
+    0%{
+        transform: translate(-50%, -50%) rotate(0deg)       
+    }
+    100%{
+        transform: translate(-50%, -50%) rotate(360deg)
+    }
+}
+/*parte inferior PRINCIPAL PAGINA ----------------*/
+.about-section{
+    padding: 3rem;
+    text-align: center;
+    background: rgb(75, 75, 75);/*cuadro de fondo*/
+    color: #ebebeb;/*acerca de nosotros*/
+}
+.about-section h2{
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+}
+.about-section p{
+    font-size: 1.3rem;
+}
+/*pie de pagina-----------------------------------*/
+footer {
+    padding: 1.5rem;
+    background: #2b4167;
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+}
+.flash-messages{
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    width: auto;
+}
+.alert{
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 14px;
+    animation: fade-in-out 5s forwards;
+}
+.alert.success{
+    background-color: #4caf50;
+}
+.alert.danger{
+    background-color: #f44336;
+}
+
+/*animacion de desaparecer el mensaje-------------------------------*/
+@keyframes fade-in-out{
+    0%{opacity: 1;}
+    80%{opacity: 1;}
+    100%{opacity: 0;}
+}
+/*diseño responsivo*/
+@media (max-width: 768px){
+    .nav-links{
+        display: none;
+        flex-direction: column;
+    }
+    .nav-links.active{
+        display: flex;
+        background: #000;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        padding: 1rem;
+    }
+    .burger{
+        display: flex;
+    }
+}
+/*imagenes*****************************************************************************/
+.logo {
+    position: absolute;
+    top: 13%;
+    left: 80%;
+    width: 20%;
+    height: auto;
+    border-radius: 50%;
+  }
+/*redes sociales--------------------------------------------------------------*/
+ul {
+    list-style: none;
+  }
+  
+  .example-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .example-2 .icon-content {
+    margin: 0 10px;
+    position: relative;
+  }
+  .example-2 .icon-content .tooltip {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  .example-2 .icon-content:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    top: -50px;
+  }
+  .example-2 .icon-content a {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #4d4d4d;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+  }
+  .example-2 .icon-content a:hover {
+    box-shadow: 3px 2px 45px 0px rgb(0 0 0 / 12%);
+  }
+  .example-2 .icon-content a svg {
+    position: relative;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+  }
+  .example-2 .icon-content a:hover {
+    color: white;
+  }
+  .example-2 .icon-content a .filled {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: #000;
+    transition: all 0.3s ease-in-out;
+  }
+  .example-2 .icon-content a:hover .filled {
+    height: 100%;
+  }
+  
+  .example-2 .icon-content a[data-social="whatsapp"] .filled,
+  .example-2 .icon-content a[data-social="whatsapp"] ~ .tooltip {
+    background-color: #128c7e;
+  }
+  
+  .example-2 .icon-content a[data-social="facebook"] .filled,
+  .example-2 .icon-content a[data-social="facebook"] ~ .tooltip {
+    background-color: #3b5998;
+  }
+  .example-2 .icon-content a[data-social="instagram"] .filled,
+  .example-2 .icon-content a[data-social="instagram"] ~ .tooltip {
+    background: linear-gradient(
+      45deg,
+      #405de6,
+      #5b51db,
+      #b33ab4,
+      #c135b4,
+      #e1306c,
+      #fd1f1f
+    );
+  }
+
+  

@@ -1,0 +1,118 @@
+<link rel="stylesheet" href="../static/consult.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas Agendadas</title>
+</head>
+<body>
+    <div class="container">
+
+        <div id="password-protection">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" placeholder="Ingrese la contraseña">
+            <button onclick="checkPassword()">Acceder</button>
+        </div>
+
+        <div id="appointments-list" style="display: none;">
+            
+            <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+
+            <table class="table" id="tabla-consultas">
+                <h1 id="titulo-consultas">
+                  Consultas del <span id="fecha-hoy"></span> — 
+                  Total de consultas: <span id="total-consultas">0</span>
+                </h1>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                        <th>Correo</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo-tabla">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const password = "veterinario123";
+        let appointmentsFromDB = [];
+
+        async function getAppointments() {
+            try {
+                const response = await fetch('/api/consultas');
+                if (!response.ok) throw new Error('Error en la respuesta del servidor');
+                appointmentsFromDB = await response.json();
+            } catch (err) {
+                const errorDiv = document.getElementById("error-message");
+                errorDiv.style.display = "block";
+                errorDiv.textContent = "Error cargando las consultas: " + err.message;
+            }
+        }
+
+        async function checkPassword() {
+            const inputPassword = document.getElementById('password').value;
+            if (inputPassword === password) {
+                document.getElementById('password-protection').style.display = 'none';
+                document.getElementById('appointments-list').style.display = 'block';
+                await showAppointments();
+            } else {
+                alert('Contraseña incorrecta. Intente nuevamente.');
+            }
+        }
+
+        async function showAppointments() {
+            await getAppointments(); 
+            const tableBody = document.getElementById('cuerpo-tabla');
+            tableBody.innerHTML = '';
+            appointmentsFromDB.forEach(appointment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${appointment.fecha}</td>
+                    <td>${appointment.hora}</td>
+                    <td>${appointment.nombre}</td>
+                    <td>${appointment.telefono}</td>
+                    <td>${appointment.direccion}</td>
+                    <td>${appointment.correo}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+    </script>
+
+    <script src="/static/app.js"></script>
+    <script>
+        document.getElementById("fecha-hoy").innerText = new Date().toLocaleDateString('es-ES');
+    
+        fetch('/api/consultas')
+            .then(res => res.json())
+            .then(data => {
+                const hoy = new Date().toISOString().split('T')[0];
+                const totalHoy = data.filter(c => c.fecha === hoy).length;
+                document.getElementById('total-consultas').innerText = totalHoy;
+            });
+    </script>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="successToast" class="toast align-items-center text-bg-success border-0"
+             role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body">
+              Consultas eliminadas correctamente ✅
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast" aria-label="Cerrar"></button>
+          </div>
+        </div>
+    </div>
+</body>
+</html>
