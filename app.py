@@ -6,7 +6,6 @@ import mysql.connector
 from mysql.connector import Error
 from datetime import date, datetime, time, timedelta
 from urllib.parse import urlparse
-from sqlalchemy.engine.url import make_url
 
 load_dotenv()
 
@@ -14,8 +13,10 @@ app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 
 # Obtener la URL de conexión desde la variable de entorno
-db_url = os.getenv("MYSQL_URL")
+db_url = make_url(os.getenv("MYSQL_URL"))
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
++ # Obtener la URL de conexión desde la variable de entorno
++db_url = os.getenv("MYSQL_URL")
 
 # Parsear la URL para separar los datos
 parsed = urlparse(db_url)
@@ -47,6 +48,15 @@ app.config['MAIL_DEFAULT_SENDER'] = app.config['MAIL_USERNAME']
 
 mail = Mail(app)
 
+# ✅ Conexión a MySQL
+try:
+    conexion = mysql.connector.connect(**db_config)
+    cursor = conexion.cursor(dictionary=True)
+    print("✅ Conexión a la base de datos establecida")
+except Error as e:
+    print(f"❌ Error al conectar a MySQL: {e}")
+    conexion = None
+    cursor = None
 
 @app.route('/')
 def index():
