@@ -12,6 +12,13 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 
+# Debug: Imprimir variables de entorno MySQL
+print("MYSQL_HOST:", os.getenv("MYSQL_HOST"))
+print("MYSQL_USER:", os.getenv("MYSQL_USER"))
+print("MYSQL_PASSWORD:", os.getenv("MYSQL_PASSWORD"))
+print("MYSQL_DATABASE:", os.getenv("MYSQL_DATABASE"))
+print("MYSQL_URL:", os.getenv("MYSQL_URL"))
+
 # Obtener la URL de conexión desde la variable de entorno
 db_url = os.getenv("MYSQL_URL")
 
