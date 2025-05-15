@@ -15,7 +15,6 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 # Obtener la URL de conexión desde la variable de entorno
 db_url = make_url(os.getenv("MYSQL_URL"))
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
-+ # Obtener la URL de conexión desde la variable de entorno
 db_url = os.getenv("MYSQL_URL")
 
 # Parsear la URL para separar los datos
