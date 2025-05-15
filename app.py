@@ -8,6 +8,7 @@ from datetime import date, datetime, time, timedelta
 from urllib.parse import urlparse
 
 load_dotenv()
+
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 
@@ -23,8 +24,6 @@ db_config = {
     'password': parsed.password,
     'database': parsed.path[1:],
     'port': parsed.port or 3306
-}
-ed.port
 }
 
 try:
@@ -45,16 +44,6 @@ app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = app.config['MAIL_USERNAME']
 
 mail = Mail(app)
-
-# ✅ Conexión a MySQL
-try:
-    conexion = mysql.connector.connect(**db_config)
-    cursor = conexion.cursor(dictionary=True)
-    print("✅ Conexión a la base de datos establecida")
-except Error as e:
-    print(f"❌ Error al conectar a MySQL: {e}")
-    conexion = None
-    cursor = None
 
 @app.route('/')
 def index():
@@ -218,4 +207,4 @@ def close_db(exception=None):
         print(f"⚠️ Error al cerrar conexión: {e}")
 
 #if __name__ == "__main__":
- #   app.run(debug=True, port=5000)
+ #   app.run(debug=True)
