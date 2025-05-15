@@ -6,6 +6,7 @@ import mysql.connector
 from mysql.connector import Error
 from datetime import date, datetime, time, timedelta
 from urllib.parse import urlparse
+from sqlalchemy.engine.url import make_url
 
 load_dotenv()
 
@@ -14,6 +15,7 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 
 # Obtener la URL de conexión desde la variable de entorno
 db_url = os.getenv("MYSQL_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 
 # Parsear la URL para separar los datos
 parsed = urlparse(db_url)
@@ -44,6 +46,7 @@ app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = app.config['MAIL_USERNAME']
 
 mail = Mail(app)
+
 
 @app.route('/')
 def index():
