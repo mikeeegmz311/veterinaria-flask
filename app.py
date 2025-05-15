@@ -8,13 +8,10 @@ from datetime import date, datetime, time, timedelta
 from urllib.parse import urlparse
 
 load_dotenv()
-
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 
 # Obtener la URL de conexión desde la variable de entorno
-db_url = make_url(os.getenv("MYSQL_URL"))
-app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 db_url = os.getenv("MYSQL_URL")
 
 # Parsear la URL para separar los datos
@@ -25,7 +22,9 @@ db_config = {
     'user': parsed.username,
     'password': parsed.password,
     'database': parsed.path[1:],
-    'port': parsed.port
+    'port': parsed.port or 3306
+}
+ed.port
 }
 
 try:
