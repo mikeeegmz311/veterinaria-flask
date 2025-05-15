@@ -5,17 +5,25 @@ import os
 import mysql.connector
 from mysql.connector import Error
 from datetime import date, datetime, time, timedelta
+from urllib.parse import urlparse
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 
+# Obtener la URL de conexión desde la variable de entorno
+db_url = os.getenv("MYSQL_URL")
+
+# Parsear la URL para separar los datos
+parsed = urlparse(db_url)
+
 db_config = {
-    'host': 'localhost',
-    'user': 'dev',
-    'password': '',
-    'database': 'veterinaria_db'
+    'host': parsed.hostname,
+    'user': parsed.username,
+    'password': parsed.password,
+    'database': parsed.path[1:],
+    'port': parsed.port
 }
 
 try:
@@ -198,5 +206,5 @@ def close_db(exception=None):
     except Exception as e:
         print(f"⚠️ Error al cerrar conexión: {e}")
 
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+#if __name__ == "__main__":
+ #   app.run(debug=True, port=5000)
