@@ -23,14 +23,22 @@ print("MYSQL_URL:", os.getenv("MYSQL_URL"))
 db_url = os.getenv("MYSQL_URL")
 
 # Parsear la URL para separar los datos
-parsed = urlparse(db_url)
+if db_url:
+    parsed = urlparse(db_url)
+    print("HOST:", parsed.hostname)
+    print("USER:", parsed.username)
+    print("PASS:", parsed.password)
+    print("DB:", parsed.path[1:])  # quitar el "/" del inicio
+    print("PORT:", parsed.port)
+else:
+    print("❌ No se encontró MYSQL_URL")
 
 db_config = {
-    'host': parsed.hostname,
-    'user': parsed.username,
-    'password': parsed.password,
-    'database': parsed.path[1:],
-    'port': parsed.port or 3306
+    'host': parsed.hostname if db_url else os.getenv("MYSQL_HOST", "localhost"),
+    'user': parsed.username if db_url else os.getenv("MYSQL_USER", "root"),
+    'password': parsed.password if db_url else os.getenv("MYSQL_PASSWORD", ""),
+    'database': parsed.path[1:] if db_url else os.getenv("MYSQL_DATABASE", "railway"),
+    'port': parsed.port if db_url else int(os.getenv("MYSQL_PORT", 3306))
 }
 
 try:
