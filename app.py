@@ -13,10 +13,10 @@ app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 
 # Leer datos del entorno (Railway las inyecta automáticamente)
-MYSQLHOST = os.getenv("MYSQL_HOST")         # 👈 Exactamente como lo usa Railway
-MYSQLUSER = os.getenv("MYSQL_USER")         # 👈 Exactamente como lo usa Railway
-MYSQLPASSWORD = os.getenv("MYSQL_PASSWORD") # 👈 Exactamente como lo usa Railway
-MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
+MYSQLHOST = os.getenv("MYSQLHOST")         # 👈 Exactamente como lo usa Railway
+MYSQLUSER = os.getenv("MYSQLUSER")         # 👈 Exactamente como lo usa Railway
+MYSQLPASSWORD = os.getenv("MYSQLPASSWORD") # 👈 Exactamente como lo usa Railway
+MYSQL_DATABASE = os.getenv("MYSQLDATABASE")
 
 # Mostrar por consola para debug (verifica que no sean None)
 print("=== VALORES DE CONEXIÓN MYSQL ===")
