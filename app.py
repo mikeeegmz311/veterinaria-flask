@@ -12,41 +12,30 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 
-# Debug: Imprimir variables de entorno MySQL
-print("MYSQL_HOST:", os.getenv("MYSQL_HOST"))
-print("MYSQL_USER:", os.getenv("MYSQL_USER"))
-print("MYSQL_PASSWORD:", os.getenv("MYSQL_PASSWORD"))
-print("MYSQL_DATABASE:", os.getenv("MYSQL_DATABASE"))
-print("MYSQL_URL:", os.getenv("MYSQL_URL"))
+# Leer datos del entorno (Railway las inyecta automáticamente)
+MYSQL_HOST = os.getenv("MYSQL_HOST")
+MYSQL_USER = os.getenv("MYSQLUSER")
+MYSQL_PASSWORD = os.getenv("MYSQLPASSWORD")
+MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
 
-# Obtener la URL de conexión desde la variable de entorno
-db_url = os.getenv("MYSQL_URL")
+# Mostrar por consola para debug
+print("HOST:", MYSQL_HOST)
+print("USER:", MYSQL_USER)
+print("PASS:", MYSQL_PASSWORD)
+print("DB:", MYSQL_DATABASE)
 
-# Parsear la URL para separar los datos
-if db_url:
-    parsed = urlparse(db_url)
-    print("HOST:", parsed.hostname)
-    print("USER:", parsed.username)
-    print("PASS:", parsed.password)
-    print("DB:", parsed.path[1:])  # quitar el "/" del inicio
-    print("PORT:", parsed.port)
-else:
-    print("❌ No se encontró MYSQL_URL")
-
-db_config = {
-    'host': parsed.hostname if db_url else os.getenv("MYSQL_HOST", "localhost"),
-    'user': parsed.username if db_url else os.getenv("MYSQL_USER", "root"),
-    'password': parsed.password if db_url else os.getenv("MYSQL_PASSWORD", ""),
-    'database': parsed.path[1:] if db_url else os.getenv("MYSQL_DATABASE", "railway"),
-    'port': parsed.port if db_url else int(os.getenv("MYSQL_PORT", 3306))
-}
-
+# Conexión
 try:
-    conexion = mysql.connector.connect(**db_config)
+    conexion = mysql.connector.connect(
+        host=MYSQL_HOST,
+        user=MYSQL_USER,
+        password=MYSQL_PASSWORD,
+        database=MYSQL_DATABASE
+    )
     cursor = conexion.cursor(dictionary=True)
-    print("✅ Conexión a la base de datos establecida")
-except Error as e:
-    print(f"❌ Error al conectar a MySQL: {e}")
+    print("✅ Conexión a MySQL exitosa")
+except mysql.connector.Error as err:
+    print("❌ Error al conectar a MySQL:", err)
     conexion = None
     cursor = None
 
@@ -222,4 +211,4 @@ def close_db(exception=None):
         print(f"⚠️ Error al cerrar conexión: {e}")
 
 #if __name__ == "__main__":
- #   app.run(debug=True)
+#    app.run(debug=True)
