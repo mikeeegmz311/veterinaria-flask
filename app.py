@@ -13,24 +13,27 @@ app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 
 # Leer datos del entorno (Railway las inyecta automáticamente)
-MYSQL_HOST = os.getenv("MYSQLHOST")  # Corregido: sin guión bajo
-MYSQL_USER = os.getenv("MYSQLUSER")  # Corregido: sin guión bajo
-MYSQL_PASSWORD = os.getenv("MYSQLPASSWORD")  # Corregido: sin guión bajo
+MYSQLHOST = os.getenv("MYSQLHOST")         # 👈 Exactamente como lo usa Railway
+MYSQLUSER = os.getenv("MYSQLUSER")         # 👈 Exactamente como lo usa Railway
+MYSQLPASSWORD = os.getenv("MYSQLPASSWORD") # 👈 Exactamente como lo usa Railway
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
 
-# Mostrar por consola para debug
-print("HOST:", MYSQL_HOST)
-print("USER:", MYSQL_USER)
-print("PASS:", MYSQL_PASSWORD)
-print("DB:", MYSQL_DATABASE)
+# Mostrar por consola para debug (verifica que no sean None)
+print("=== VALORES DE CONEXIÓN MYSQL ===")
+print("MYSQLHOST:", MYSQLHOST)
+print("MYSQLUSER:", MYSQLUSER)
+print("MYSQLPASSWORD:", "******" if MYSQLPASSWORD else "None")
+print("MYSQL_DATABASE:", MYSQL_DATABASE)
+print("=================================")
 
 # Conexión
 try:
     conexion = mysql.connector.connect(
-        host=MYSQL_HOST,
-        user=MYSQL_USER,
-        password=MYSQL_PASSWORD,
-        database=MYSQL_DATABASE
+        host=MYSQLHOST,        # 👈 Usando las variables exactas
+        user=MYSQLUSER,        # 👈 Usando las variables exactas
+        password=MYSQLPASSWORD,# 👈 Usando las variables exactas
+        database=MYSQL_DATABASE,
+        port=3306              # 👈 Puerto por defecto para MySQL
     )
     cursor = conexion.cursor(dictionary=True)
     print("✅ Conexión a MySQL exitosa")
@@ -38,7 +41,7 @@ except mysql.connector.Error as err:
     print("❌ Error al conectar a MySQL:", err)
     conexion = None
     cursor = None
-
+    
 # Flask-Mail
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
