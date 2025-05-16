@@ -13,9 +13,9 @@ app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 
 # Leer datos del entorno (Railway las inyecta automáticamente)
-MYSQL_HOST = os.getenv("MYSQL_HOST")
-MYSQL_USER = os.getenv("MYSQLUSER")
-MYSQL_PASSWORD = os.getenv("MYSQLPASSWORD")
+MYSQL_HOST = os.getenv("MYSQLHOST")  # Corregido: sin guión bajo
+MYSQL_USER = os.getenv("MYSQLUSER")  # Corregido: sin guión bajo
+MYSQL_PASSWORD = os.getenv("MYSQLPASSWORD")  # Corregido: sin guión bajo
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
 
 # Mostrar por consola para debug
