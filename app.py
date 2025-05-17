@@ -16,7 +16,7 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', '123')
 MYSQLHOST = os.getenv("MYSQLHOST")         # 👈 Exactamente como lo usa Railway
 MYSQLUSER = os.getenv("MYSQLUSER")         # 👈 Exactamente como lo usa Railway
 MYSQLPASSWORD = os.getenv("MYSQLPASSWORD") # 👈 Exactamente como lo usa Railway
-MYSQL_DATABASE = os.getenv("MYSQLDATABASE")
+MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
 
 # Mostrar por consola para debug (verifica que no sean None)
 print("=== VALORES DE CONEXIÓN MYSQL ===")
